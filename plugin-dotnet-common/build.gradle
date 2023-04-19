@@ -15,8 +15,7 @@
  */
 
 plugins{
-    id 'com.github.rodm.teamcity-common' version '1.4.1'
-    id 'plugin.conventions'
+    id 'teamcity.common-library'
 }
 
 dependencies {

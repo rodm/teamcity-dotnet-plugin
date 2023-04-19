@@ -20,10 +20,12 @@ plugins {
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
 }
 
 dependencies {
     implementation ("org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin:1.7.20")
+    implementation ("com.github.rodm:gradle-teamcity-plugin:1.4.1")
 }
 
 

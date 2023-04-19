@@ -15,8 +15,7 @@
  */
 
 plugins {
-  id 'com.github.rodm.teamcity-server' version '1.4.1'
-  id 'plugin.conventions'
+  id 'teamcity.server-plugin'
 }
 
 teamcity {
