@@ -15,7 +15,7 @@
  */
 
 plugins {
-    id 'groovy-gradle-plugin'
+    `kotlin-dsl`
 }
 
 repositories {
@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin:1.7.20'
+    implementation ("org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin:1.7.20")
 }
 
 

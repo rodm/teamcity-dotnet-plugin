@@ -15,7 +15,7 @@
  */
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm'
+    id ("org.jetbrains.kotlin.jvm")
 }
 
 repositories {
@@ -23,11 +23,19 @@ repositories {
     mavenLocal()
 }
 
-group = project.projectIds.group
-version = project.projectIds.version
+group = (rootProject.ext["projectIds"] as Map<String, String>)["group"] as String
+version = (rootProject.ext["projectIds"] as Map<String, String>)["version"] as String
 
-test.useTestNG()
-jar.version = null
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+tasks {
+    test {
+        useTestNG()
+    }
+    jar {
+        version = null
+    }
+}
