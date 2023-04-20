@@ -24,7 +24,5 @@ repositories {
 
 dependencies {
     implementation ("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20")
-    implementation ("com.github.rodm:gradle-teamcity-plugin:1.4.1")
+    implementation ("io.github.rodm:gradle-teamcity-plugin:1.5")
 }
-
-

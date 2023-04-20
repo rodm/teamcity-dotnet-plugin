@@ -19,8 +19,6 @@ plugins {
 }
 
 teamcity {
-  version = project.teamcityVersion
-  allowSnapshotVersions = true
   server {
     descriptor = project.file('teamcity-plugin.xml')
     tokens = [Plugin_Version: project.version]

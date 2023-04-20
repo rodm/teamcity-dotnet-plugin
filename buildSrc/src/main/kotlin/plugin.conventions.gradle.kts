@@ -16,6 +16,7 @@
 
 plugins {
     id ("org.jetbrains.kotlin.jvm")
+    id ("io.github.rodm.teamcity-base")
 }
 
 repositories {
@@ -29,6 +30,11 @@ version = (rootProject.ext["projectIds"] as Map<String, String>)["version"] as S
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+teamcity {
+    version = rootProject.ext["teamcityVersion"] as String
+    allowSnapshotVersions = true
 }
 
 tasks {

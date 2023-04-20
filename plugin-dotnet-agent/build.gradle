@@ -19,8 +19,6 @@ plugins {
 }
 
 teamcity {
-  version = project.teamcityVersion
-  allowSnapshotVersions = true
   agent {
     descriptor = project.file('teamcity-plugin.xml')
     files {
