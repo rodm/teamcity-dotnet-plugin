@@ -21,7 +21,6 @@ plugins {
 
 repositories {
     mavenCentral()
-    mavenLocal()
 }
 
 group = (rootProject.ext["projectIds"] as Map<String, String>)["group"] as String
