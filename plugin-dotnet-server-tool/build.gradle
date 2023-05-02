@@ -18,51 +18,54 @@ plugins {
   id 'base'
 }
 
-class PreparePackagesTask extends DefaultTask {
-  @TaskAction
-  def run() {
-    ant.delete(dir: './bundled-tool')
-    ant.mkdir(dir: './bundled-tool')
-
-    def toolsPackageVersion = '2021.1.2'
-    def toolsPackageId = 'JetBrains.ReSharper.CommandLineTools/' + toolsPackageVersion
-
-    println 'Processing ' + toolsPackageId
-    ant.delete(dir: './packages')
-    ant.mkdir(dir: './packages')
-    ant.mkdir(dir: './packages/pack')
-    ant.get(src: 'https://www.nuget.org/api/v2/package/' + toolsPackageId, dest: './packages/package.zip', skipexisting: 'true')
-    ant.unzip(src: './packages/package.zip', dest: './packages')
-    ant.move(todir: './packages/pack', overwrite: 'true', force: 'true') {
-      fileset(dir: './packages') {
-        include(name: 'tools/**/*.*')
-      }
+repositories {
+  ivy {
+    url = uri("https://globalcdn.nuget.org/packages/")
+    patternLayout {
+      artifact("[artifact].[revision].nupkg")
     }
-
-    ant.copy(todir: './packages', overwrite: 'true', force: 'true'){
-      fileset(file: './bundled-tool.xml')
+    metadataSources {
+      artifact()
     }
-    ant.move(file: './packages/bundled-tool.xml', tofile: './packages/pack/teamcity-plugin.xml', overwrite: 'true', force: 'true')
-
-    ant.zip(destfile: './bundled-tool/jetbrains.resharper-clt.bundled.zip') {
-      fileset(dir: './packages/pack') {
-        include(name: '**/*.*')
-      }
-    }
-    ant.move(file: './packages/JetBrains.ReSharper.CommandLineTools.nuspec', todir: './bundled-tool', overwrite: 'true', force: 'true')
-    ant.copy(todir: './bundled-tool', overwrite: 'true', force: 'true'){
-      fileset(file: './bundled-tool.xml')
-    }
-
-    ant.delete(dir: './packages')
   }
 }
 
-task preparePackagesTask(type: PreparePackagesTask)
+configurations {
+  dotnet
+}
+
+dependencies {
+  dotnet ':jetbrains.resharper.commandlinetools:2021.1.2'
+}
+
+task preparePackage(type :Copy) {
+  destinationDir = layout.buildDirectory.dir('nuspec').get().asFile
+  into ('') {
+    from(zipTree(configurations.dotnet.singleFile)) {
+      include('*.nuspec')
+    }
+  }
+}
+
+task resharperTool(type: Zip) {
+  destinationDirectory = layout.buildDirectory.dir('tool')
+  archiveFileName = 'jetbrains.resharper-clt.bundled.zip'
+  from (zipTree(configurations.dotnet.singleFile)) {
+    includeEmptyDirs = false
+    include ('tools/**')
+  }
+  into ('') {
+    from('bundled-tool.xml')
+    rename('bundled-tool.xml', 'teamcity-plugin.xml')
+  }
+}
 
 task packageTool(type: Zip) {
-  dependsOn (preparePackagesTask)
-  from ('bundled-tool')
+  into ('') {
+    from (preparePackage)
+    from (resharperTool.archiveFile)
+    from ('bundled-tool.xml')
+  }
 }
 
 artifacts {

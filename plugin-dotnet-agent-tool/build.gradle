@@ -18,32 +18,34 @@ plugins {
   id 'base'
 }
 
-class PreparePackagesTask extends DefaultTask {
-  @TaskAction
-  def run() {
-    ant.delete(dir: './tools')
-    ant.mkdir(dir: './tools')
-
-    def integrationPackageVersion = '1.0.28'
-    def integrationPackageId = 'TeamCity.Dotnet.Integration/' + integrationPackageVersion
-
-    println 'Processing ' + integrationPackageId
-    ant.delete(dir: './packages')
-    ant.mkdir(dir: './packages')
-    ant.get(src: 'https://www.nuget.org/api/v2/package/' +  integrationPackageId, dest: './packages/package.zip', skipexisting: 'true')
-    ant.unzip(src: './packages/package.zip', dest: './packages')
-    ant.move(todir: './tools', overwrite: 'true', force: 'true') {
-      fileset(dir: './packages/build/_common', includes: '**/*')
+repositories {
+  ivy {
+    url = uri("https://globalcdn.nuget.org/packages/")
+    patternLayout {
+      artifact("[artifact].[revision].nupkg")
     }
-    ant.delete(dir: './packages')
+    metadataSources {
+      artifact()
+    }
   }
 }
 
-task preparePackagesTask(type: PreparePackagesTask)
+configurations {
+  dotnet
+}
+
+dependencies {
+  dotnet ':teamcity.dotnet.integration:1.0.28'
+}
 
 task packageTool(type: Zip) {
-  dependsOn (preparePackagesTask)
-  from ('tools')
+  from(zipTree(configurations.dotnet.singleFile)) {
+    includeEmptyDirs = false
+    include('build/_common/**')
+    eachFile { file ->
+      file.path = file.path.replace('build/_common/', '')
+    }
+  }
 }
 
 artifacts {
