@@ -1,5 +1,5 @@
 
 plugins {
     id ("plugin.conventions")
-    id ("com.github.rodm.teamcity-common")
+    id ("io.github.rodm.teamcity-common")
 }
