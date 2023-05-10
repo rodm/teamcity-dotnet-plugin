@@ -15,12 +15,12 @@
  */
 
 plugins{
-    id 'teamcity.common-library'
+    id ("teamcity.common-library")
 }
 
 dependencies {
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.7.20'
-    implementation "com.google.code.gson:gson:2.9.1"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-    testImplementation 'org.testng:testng:7.5'
+    implementation ("org.jetbrains.kotlin:kotlin-stdlib:1.7.20")
+    implementation ("com.google.code.gson:gson:2.9.1")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    testImplementation ("org.testng:testng:7.5")
 }

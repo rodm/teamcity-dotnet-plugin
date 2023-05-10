@@ -14,6 +14,26 @@
  * limitations under the License.
  */
 
-rootProject.name='teamcity-dotnet-plugin'
+plugins {
+  id ("teamcity.dotnet-tool")
+}
 
-include 'plugin-dotnet-agent', 'plugin-dotnet-agent-tool', 'plugin-dotnet-common', 'plugin-dotnet-server', 'plugin-dotnet-server-tool'
+dependencies {
+  dotnet (":teamcity.dotnet.integration:1.0.28")
+}
+
+tasks {
+  register<Zip>("packageTool") {
+    from (zipTree(configurations.dotnet.get().singleFile)) {
+      includeEmptyDirs = false
+      include("build/_common/**")
+      eachFile {
+        path = path.replace("build/_common/", "")
+      }
+    }
+  }
+}
+
+artifacts {
+  add("default", tasks.named("packageTool"))
+}

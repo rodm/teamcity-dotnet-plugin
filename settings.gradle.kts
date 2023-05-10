@@ -14,24 +14,10 @@
  * limitations under the License.
  */
 
-plugins {
-  id 'teamcity.dotnet-tool'
-}
+rootProject.name = "teamcity-dotnet-plugin"
 
-dependencies {
-  dotnet ':teamcity.dotnet.integration:1.0.28'
-}
-
-task packageTool(type: Zip) {
-  from(zipTree(configurations.dotnet.singleFile)) {
-    includeEmptyDirs = false
-    include('build/_common/**')
-    eachFile { file ->
-      file.path = file.path.replace('build/_common/', '')
-    }
-  }
-}
-
-artifacts {
-  add('default', tasks.named('packageTool'))
-}
+include ("plugin-dotnet-agent")
+include ("plugin-dotnet-agent-tool")
+include ("plugin-dotnet-common")
+include ("plugin-dotnet-server")
+include ("plugin-dotnet-server-tool")
