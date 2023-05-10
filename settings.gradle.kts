@@ -16,6 +16,8 @@
 
 rootProject.name = "teamcity-dotnet-plugin"
 
+includeBuild ("build-logic")
+
 include ("plugin-dotnet-agent")
 include ("plugin-dotnet-agent-tool")
 include ("plugin-dotnet-common")
