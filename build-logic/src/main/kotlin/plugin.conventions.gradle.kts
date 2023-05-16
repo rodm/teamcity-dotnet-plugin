@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import java.text.SimpleDateFormat
+import java.util.Date
+
 plugins {
     id ("org.jetbrains.kotlin.jvm")
     id ("io.github.rodm.teamcity-base")
@@ -23,8 +26,12 @@ repositories {
     mavenCentral()
 }
 
-group = (rootProject.ext["projectIds"] as Map<String, String>)["group"] as String
-version = (rootProject.ext["projectIds"] as Map<String, String>)["version"] as String
+group = "teamcity-dotnet-plugin"
+
+val defaultVersion = "SNAPSHOT_${SimpleDateFormat("yyyyMMddHHmmss").format(Date())}"
+val versionNumber = project.findProperty("versionNumber") ?: ""
+val validVersion = Regex("\\d+(\\.\\d+\\.\\d+.*)?").matches(versionNumber.toString())
+version = if (validVersion) versionNumber else defaultVersion
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -32,7 +39,7 @@ java {
 }
 
 teamcity {
-    version = rootProject.ext["teamcityVersion"] as String
+    version = (project.findProperty("teamcityVersion") ?: "2022.12-SNAPSHOT") as String
     allowSnapshotVersions = true
 }
 
