@@ -23,7 +23,8 @@ dependencies {
 }
 
 tasks {
-  register<Zip>("packageTool") {
+  register<Copy>("packageTool") {
+    destinationDir = layout.buildDirectory.dir("tools").get().asFile
     from (zipTree(configurations.dotnet.get().singleFile)) {
       includeEmptyDirs = false
       include("build/_common/**")

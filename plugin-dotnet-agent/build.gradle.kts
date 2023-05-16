@@ -42,7 +42,7 @@ teamcity {
     descriptor = project.file("teamcity-plugin.xml")
     files {
       into("tools") {
-        from (zipTree(configurations["tool"].singleFile))
+        from (configurations["tool"])
       }
     }
   }

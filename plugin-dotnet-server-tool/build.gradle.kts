@@ -23,7 +23,7 @@ dependencies {
 }
 
 tasks {
-  val preparePackage = register<Copy>("preparePackage") {
+  register<Copy>("unpackNuspec") {
     destinationDir = layout.buildDirectory.dir("nuspec").get().asFile
     into("") {
       from(zipTree(configurations.dotnet.get().singleFile)) {
@@ -32,7 +32,7 @@ tasks {
     }
   }
 
-  val resharperTool = register<Zip>("resharperTool") {
+  register<Zip>("resharperTool") {
     destinationDirectory.set(layout.buildDirectory.dir("tool"))
     archiveFileName.set("jetbrains.resharper-clt.bundled.zip")
     from(zipTree(configurations.dotnet.get().singleFile)) {
@@ -44,16 +44,10 @@ tasks {
       rename("bundled-tool.xml", "teamcity-plugin.xml")
     }
   }
-
-  register<Zip>("packageTool") {
-    into("") {
-      from(preparePackage)
-      from(resharperTool.get().archiveFile)
-      from("bundled-tool.xml")
-    }
-  }
 }
 
 artifacts {
-  add("default", tasks.named("packageTool"))
+  add("default", tasks.named("unpackNuspec"))
+  add("default", tasks.named("resharperTool"))
+  add("default", file("bundled-tool.xml"))
 }
