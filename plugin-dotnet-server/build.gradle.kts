@@ -22,16 +22,20 @@ configurations.register("tool")
 
 dependencies {
   implementation (project(":plugin-dotnet-common"))
-  implementation ("com.google.code.gson:gson:2.9.1")
-  implementation ("org.jetbrains.kotlin:kotlin-stdlib:1.7.20")
-  implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+  implementation (kotlin("stdlib"))
+  implementation (libs.google.gson)
+  implementation (libs.kotlinx.core)
+
   provided ("org.jetbrains.teamcity.internal:server-tools:${teamcity.version}")
-  testImplementation ("org.testng:testng:7.5")
-  testImplementation ("org.jmock:jmock-junit4:2.12.0")
-  testImplementation ("io.mockk:mockk:1.13.2")
-  testImplementation ("org.jetbrains.kotlin:kotlin-reflect")
-  testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+
+  testImplementation (kotlin("reflect"))
+  testImplementation (libs.testng)
+  testImplementation (libs.jmock.junit4)
+  testImplementation (libs.mockk)
+  testImplementation (libs.kotlinx.test)
+
   agent (project(path = ":plugin-dotnet-agent", configuration = "plugin"))
+
   "tool" (project(":plugin-dotnet-server-tool"))
 }
 

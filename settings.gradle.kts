@@ -16,6 +16,27 @@
 
 rootProject.name = "teamcity-dotnet-plugin"
 
+dependencyResolutionManagement {
+    versionCatalogs {
+        register("libs") {
+            library ("google.gson","com.google.code.gson:gson:2.9.1")
+            library ("commons.io", "commons-io:commons-io:2.11.0")
+
+            library ("testng", "org.testng:testng:7.5")
+            library ("mockk", "io.mockk:mockk:1.13.2")
+            library ("hamcrest.all","org.hamcrest:hamcrest-all:1.3")
+
+            version ("jmock", "2.12.0")
+            library ("jmock.core", "org.jmock","jmock").versionRef("jmock")
+            library ("jmock.junit4", "org.jmock", "jmock-junit4").versionRef("jmock")
+
+            version ("kotlinx", "1.6.4")
+            library ("kotlinx.core","org.jetbrains.kotlinx", "kotlinx-coroutines-core").versionRef("kotlinx")
+            library ("kotlinx.test","org.jetbrains.kotlinx", "kotlinx-coroutines-test").versionRef("kotlinx")
+        }
+    }
+}
+
 includeBuild ("build-logic")
 
 include ("plugin-dotnet-agent")

@@ -22,18 +22,20 @@ configurations.register("tool")
 
 dependencies {
   implementation (project(":plugin-dotnet-common"))
-  implementation ("org.jetbrains.kotlin:kotlin-stdlib:1.7.20")
-  implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-  provided ("org.jetbrains.teamcity.internal:agent:${teamcity.version}")
-  implementation ("commons-io:commons-io:2.11.0")
-  "tool"(project(":plugin-dotnet-agent-tool"))
+  implementation (kotlin("stdlib"))
+  implementation (libs.kotlinx.core)
+  implementation (libs.commons.io)
 
-  testImplementation ("org.testng:testng:7.5")
-  testImplementation ("org.jmock:jmock:2.12.0")
-  testImplementation ("org.hamcrest:hamcrest-all:1.3")
-  testImplementation ("org.jetbrains.kotlin:kotlin-reflect")
-  testImplementation ("io.mockk:mockk:1.13.2")
-  testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+  provided ("org.jetbrains.teamcity.internal:agent:${teamcity.version}")
+
+  "tool" (project(":plugin-dotnet-agent-tool"))
+
+  testImplementation (kotlin("reflect"))
+  testImplementation (libs.testng)
+  testImplementation (libs.jmock.core)
+  testImplementation (libs.hamcrest.all)
+  testImplementation (libs.mockk)
+  testImplementation (libs.kotlinx.test)
 }
 
 teamcity {
